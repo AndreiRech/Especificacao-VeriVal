@@ -11,17 +11,19 @@ public class Cliente {
     private static final String FORMATO_DATA = "yyyy-MM-dd HH:mm";
 
     public Cliente(String inicio, String fim, boolean vip) {
-        if (verificarFormatoData(inicio) && verificarFormatoData(fim)) {
+        if (verificaData(inicio) && verificaData(fim) && verificaVip(vip)) {
             this.inicio = inicio;
             this.fim = fim;
             this.vip = vip;
             this.valor = 0;
         } else {
-            throw new IllegalArgumentException("Data em formato inválido. Use o formato: " + FORMATO_DATA);
+            throw new IllegalArgumentException("Data em formato invalido. Use o formato: " + FORMATO_DATA);
         }
     }
 
-    private boolean verificarFormatoData(String data) {
+    private boolean verificaData(String data) {
+        if (data == null || data.contains("24:00")) return false;
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(FORMATO_DATA);
         try {
             LocalDateTime.parse(data, formatter);
@@ -29,6 +31,10 @@ public class Cliente {
         } catch (DateTimeParseException e) {
             return false;
         }
+    }
+
+    private boolean verificaVip(Boolean vip) { 
+        return (vip.booleanValue() == false || vip.booleanValue() == true) ? true : false;
     }
 
     public String getInicio() {return this.inicio;}

@@ -25,10 +25,10 @@ public class Estacionamento {
 
     private double verificaHorario(LocalDateTime entrada, LocalDateTime saida, Duration duracao) {
         if(!entrada.isBefore(saida)) 
-            throw new IllegalArgumentException("A entrada deve ocorrer em um momento anterior à saida.");
+            throw new IllegalArgumentException("A entrada deve ocorrer em um momento anterior a saida.");
 
         if (horarioFuncionamento(entrada) || horarioFuncionamento(saida))
-            throw new IllegalArgumentException("Nem a entrada nem a saída podem ocorrer entre 02:00 e 08:00.");
+            throw new IllegalArgumentException("Nem a entrada nem a saida podem ocorrer entre 02:00 e 08:00.");
 
         long minutos = duracao.toMinutes();
 
@@ -42,13 +42,13 @@ public class Estacionamento {
         if (saida.getDayOfYear() == entrada.getDayOfYear() && saida.getHour() >= 8 && entrada.getHour() < 2) return 50;
 
         // Ficou mais de 1 hora e não pernoitou
-        if(saida.getDayOfYear() == entrada.getDayOfYear() || (saida.getDayOfYear() == entrada.getDayOfYear()+1 && saida.getHour() < 2)) {
+        if(saida.getDayOfYear() == entrada.getDayOfYear() || (saida.getDayOfYear() == entrada.getDayOfYear()+1 && saida.getHour() < 2 && entrada.getHour() >= 8)) {
             long horas = (long) Math.ceil((minutos-60) / 60.0);
             return 5.90 + horas * 2.50;
         }
 
         // Pernoitou (mais de 1 dia)
-        if (saida.getDayOfYear() > entrada.getDayOfYear() && saida.getHour() >= 8) {
+        if (saida.getDayOfYear() > entrada.getDayOfYear()) {
             long pernoites = 0;
 
             LocalDateTime tempEntrada = entrada.withHour(8).withMinute(0);
