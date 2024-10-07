@@ -282,7 +282,7 @@ public class TesteEstacionamento {
     @Test
     void testeInvalidoEntradaMinutoMenor() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Cliente("2020-10-1 09:9", "2024-10-10 10:00", false);
+            new Cliente("2020-10-10 09:9", "2024-10-10 10:00", false);
         });
 
         String esperada = "Data em formato invalido. Use o formato: yyyy-MM-dd HH:mm";
